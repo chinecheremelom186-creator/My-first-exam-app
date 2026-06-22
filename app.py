@@ -1,12 +1,12 @@
 import streamlit as st
 
-# Custom Branding
+# 1. SETUP
 st.set_page_config(page_title="KanteChukwu Quiz App")
 st.title("Medical Study Quiz")
 st.sidebar.write("### Powered by KANTECHUKWU")
 st.sidebar.write("Focus. Growth. Knowledge.")
 
-# Your quiz_data list goes here...
+# 2. DATA
 quiz_data = [
     {"q": "Flowering plants are also known as?", "options": ["Gymnosperms", "Angiosperms", "Bryophytes", "Pteridophytes"], "answer": "Angiosperms", "exp": "Flowering plants are called angiosperms because their seeds are enclosed within fruits."},
     {"q": "The word 'angio' means?", "options": ["Root", "Flower", "Vessel or enclosure", "Leaf"], "answer": "Vessel or enclosure", "exp": "“Angio” refers to a vessel/enclosure, while “sperm” means seed."},
@@ -34,3 +34,19 @@ quiz_data = [
     {"q": "A closed circulatory system is characterized by?", "options": ["Blood mixing with body cavity fluid", "Blood being contained inside vessels", "Absence of a heart", "Lack of circulation"], "answer": "Blood being contained inside vessels", "exp": "In closed systems, blood remains within vessels and circulates around the body."},
     {"q": "Arthropods usually possess?", "options": ["Closed circulatory systems", "Open circulatory systems", "No circulatory systems", "Plant-like vascular systems"], "answer": "Open circulatory systems", "exp": "Insects and many mollusks use open circulation where hemolymph enters body cavities."}
 ]
+
+# 3. LOGIC
+if 'score' not in st.session_state:
+    st.session_state.score = 0
+
+for i, item in enumerate(quiz_data):
+    st.write(f"### Q{i+1}: {item['q']}")
+    user_choice = st.radio("Choose an answer:", item['options'], key=f"q{i}")
+    
+    if st.button(f"Check Answer for Q{i+1}", key=f"btn{i}"):
+        if user_choice == item['answer']:
+            st.success("Correct!")
+            st.info(f"Explanation: {item['exp']}")
+        else:
+            st.error(f"Incorrect. The correct answer is {item['answer']}.")
+            st.write(f"Explanation: {item['exp']}")
